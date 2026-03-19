@@ -3,18 +3,19 @@
 #include <cstdlib>
 #include <climits>
 #include <iomanip>
+#include <cmath>
 
 ScalarConverter::ScalarConverter() {}
 ScalarConverter::~ScalarConverter() {}
 ScalarConverter::ScalarConverter(const ScalarConverter&) {}
 ScalarConverter& ScalarConverter::operator=(const ScalarConverter&) { return *this; }
 
-bool ScalarConverter::isSingleChar(const std::string& str)
+bool isSingleChar(const std::string& str)
 {
     return str.length() == 1 && !std::isdigit(str[0]);
 }
 
-bool ScalarConverter::isValidNumber(const std::string& str, double& value)
+bool isValidNumber(const std::string& str, double& value)
 {
     if (str == "nan" || str == "nanf")
     {
@@ -45,18 +46,25 @@ bool ScalarConverter::isValidNumber(const std::string& str, double& value)
     return true;
 }
 
-void ScalarConverter::convertToChar(double value)
+void convertToChar(double value)
 {
     std::cout << "char: ";
-    if (value < 0 || value > 127)
+
+    if (std::isnan(value) || std::isinf(value) || value < 0 || value > 127 || std::floor(value) != value)
+    {
         std::cout << "impossible\n";
-    else if (!std::isprint(static_cast<char>(value)))
+        return;
+    }
+
+    char c = static_cast<char>(value);
+
+    if (!std::isprint(c))
         std::cout << "Non displayable\n";
     else
-        std::cout << "'" << static_cast<char>(value) << "'\n";
+        std::cout << "'" << c << "'\n";
 }
 
-void ScalarConverter::convertToInt(double value)
+void convertToInt(double value)
 {
     std::cout << "int: ";
     if (value > INT_MAX || value < INT_MIN || errno == ERANGE)
@@ -65,7 +73,7 @@ void ScalarConverter::convertToInt(double value)
         std::cout << static_cast<int>(value) << "\n";
 }
 
-void ScalarConverter::convertToFloat(double value)
+void convertToFloat(double value)
 {
     std::cout << "float: ";
     if (errno == ERANGE)
@@ -74,7 +82,7 @@ void ScalarConverter::convertToFloat(double value)
         std::cout << static_cast<float>(value) << "f\n";
 }
 
-void ScalarConverter::convertToDouble(double value)
+void convertToDouble(double value)
 {
     std::cout << "double: ";
     if (errno == ERANGE)

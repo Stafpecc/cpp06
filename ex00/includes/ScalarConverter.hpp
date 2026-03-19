@@ -21,14 +21,14 @@ class ScalarConverter
         ~ScalarConverter();
         ScalarConverter(const ScalarConverter&);
         ScalarConverter& operator=(const ScalarConverter&);
-
-        static bool isSingleChar(const std::string& str);
-        static bool isValidNumber(const std::string& str, double& value);
-
-        static void convertToChar(double value);
-        static void convertToInt(double value);
-        static void convertToFloat(double value);
-        static void convertToDouble(double value);
 };
+
+bool isSingleChar(const std::string& str);
+bool isValidNumber(const std::string& str, double& value);
+
+void convertToChar(double value);
+void convertToInt(double value);
+void convertToFloat(double value);
+void convertToDouble(double value);
 
 #endif /* SCALARCONVERTER_HPP */
